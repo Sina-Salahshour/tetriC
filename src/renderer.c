@@ -19,7 +19,7 @@ App init_handler()
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         printf("error initializing SDL: %s\n", SDL_GetError());
     }
-    app.window = SDL_CreateWindow("p01",
+    app.window = SDL_CreateWindow("tetriC",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
         SCREEN_WIDTH, SCREEN_HEIGHT, 0);
