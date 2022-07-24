@@ -5,6 +5,7 @@
 
 #define SHAPE_FIELD_SIZE 4
 #define INITIAL_SPEED 500
+#define MAXIMUM_SPEED 500
 #define OFFSET_COUNTS 5
 
 const Color initial_shape_list[7] = {
@@ -285,6 +286,9 @@ uint32_t push_down_timer_handler(uint32_t interval, void* game_state_ptr)
     } else {
         draw_shape(game_state->field, game_state->piece);
         spawn_shape(game_state);
+    }
+    if (interval > MAXIMUM_SPEED) {
+        interval -= 2;
     }
     return interval;
 }
