@@ -1,9 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_timer.h>
-#define true 1
-#define false 0
-typedef uint8_t bool;
+#include <stdbool.h>
 typedef struct {
     SDL_Renderer* renderer;
     SDL_Window* window;
@@ -34,6 +32,7 @@ typedef struct game_state {
     Color piece_list[14];
     uint8_t piece_index;
     bool is_game_over;
+    uint16_t pitch;
 } GameState;
 App init_handler();
 void draw_rect(App app, u_int8_t x, u_int8_t y, uint32_t color, bool fancy);

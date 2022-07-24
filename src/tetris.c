@@ -1,4 +1,6 @@
 #include "tetris.h"
+#include "notes.h"
+#include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -294,12 +296,219 @@ uint32_t push_down_timer_handler(uint32_t interval, void* game_state_ptr)
     return interval;
 }
 
+void generate_sound(void* user_data, uint8_t* stream, int len)
+{
+    const int note_length = 10000;
+    const int notes[] = {
+        O2_LA,
+        O2_LA,
+        O2_LA,
+        SILENT,
+
+        O1_MI,
+        O1_MI,
+
+        O1_FA,
+        O1_FA,
+
+        O2_SOL,
+        O2_SOL,
+        O2_SOL,
+        SILENT,
+
+        O1_FA,
+        O1_FA,
+
+        O1_MI,
+        O1_MI,
+
+        O1_RE,
+        O1_RE,
+        O1_RE,
+        SILENT,
+
+        O1_RE,
+        O1_RE,
+
+        O1_FA,
+        O1_FA,
+
+        O2_LA,
+        O2_LA,
+        O2_LA,
+        SILENT,
+
+        O2_SOL,
+        O2_SOL,
+
+        O1_FA,
+        O1_FA,
+
+        O1_MI,
+        O1_MI,
+        O1_MI,
+        SILENT,
+
+        O1_MI,
+        O1_MI,
+
+        O1_FA,
+        O1_FA,
+
+        O2_SOL,
+        O2_SOL,
+        O2_SOL,
+        SILENT,
+
+        O2_LA,
+        O2_LA,
+        O2_LA,
+        SILENT,
+
+        O1_FA,
+        O1_FA,
+        O1_FA,
+        SILENT,
+
+        O1_RE,
+        O1_RE,
+        O1_RE,
+        SILENT,
+
+        O1_RE,
+        O1_RE,
+        O1_RE,
+        O1_RE,
+        SILENT,
+        SILENT,
+        SILENT,
+        SILENT,
+
+        O2_SOL,
+        O2_SOL,
+        O2_SOL,
+        SILENT,
+
+        O2_SIb,
+        O2_SIb,
+
+        O2_RE,
+        O2_RE,
+        O2_RE,
+        SILENT,
+
+        O2_DO,
+        O2_DO,
+
+        O2_SIb,
+        O2_SIb,
+        O2_SIb,
+        SILENT,
+
+        O2_LA,
+        O2_LA,
+        O2_LA,
+        SILENT,
+
+        O1_FA,
+        O1_FA,
+
+        O2_LA,
+        O2_LA,
+        O2_LA,
+        SILENT,
+
+        O2_SOL,
+        O2_SOL,
+
+        O1_FA,
+        O1_FA,
+        O1_FA,
+        SILENT,
+
+        O1_MI,
+        O1_MI,
+        O1_MI,
+        SILENT,
+
+        O1_FA,
+        O1_FA,
+
+        O2_SOL,
+        O2_SOL,
+        O2_SOL,
+        SILENT,
+
+        O2_LA,
+        O2_LA,
+        O2_LA,
+        SILENT,
+
+        O1_FA,
+        O1_FA,
+        O1_FA,
+        SILENT,
+
+        O1_RE,
+        O1_RE,
+        O1_RE,
+        SILENT,
+
+        O1_RE,
+        O1_RE,
+        O1_RE,
+        SILENT,
+
+        SILENT,
+        SILENT,
+        SILENT,
+        SILENT,
+
+    };
+    static int wave = 1;
+    static int direction = +1;
+    static int music_tick = 0;
+    static int counter = 0;
+    GameState* game_state = user_data;
+    for (uint16_t i = 0; i < len; i++) {
+        stream[i] = wave;
+        wave += direction;
+        if (wave >= notes[(int)(music_tick) % 126] || wave >= 255) {
+            direction = -1;
+        }
+        if (wave <= 1) {
+            direction = 1;
+        }
+        counter++;
+        if (counter >= note_length) {
+            counter = 0;
+            music_tick++;
+        }
+
+        printf(" wave: %d \r", music_tick);
+    }
+}
+
 int main(int argc, char const* argv[])
 {
     srand(time(0));
-    GameState game_state = { { 0 }, init_handler(), { 0, 0, 0, 0 }, { 0 }, -1 };
+    GameState game_state = { { 0 }, init_handler(), { 0, 0, 0, 0 }, { 0 }, -1, false, 100 };
     spawn_shape(&game_state);
     SDL_AddTimer(INITIAL_SPEED, &push_down_timer_handler, (void*)&game_state);
+
+    SDL_AudioSpec desired = {
+        .freq = 48000,
+        .format = AUDIO_U16LSB,
+        .channels = 1,
+        .callback = generate_sound,
+        .userdata = &game_state
+    };
+
+    if (SDL_OpenAudio(&desired, NULL)) {
+        puts("couldn't open audio device.");
+        exit(0);
+    }
+    SDL_PauseAudio(0);
     while (1) {
         event_handler(&game_state);
         check_field(&game_state);
