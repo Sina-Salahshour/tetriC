@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define SHAPE_FIELD_SIZE 4
 #define INITIAL_SPEED 500
@@ -295,6 +296,7 @@ uint32_t push_down_timer_handler(uint32_t interval, void* game_state_ptr)
 
 int main(int argc, char const* argv[])
 {
+    srand(time(0));
     GameState game_state = { { 0 }, init_handler(), { 0, 0, 0, 0 }, { 0 }, -1 };
     spawn_shape(&game_state);
     SDL_AddTimer(INITIAL_SPEED, &push_down_timer_handler, (void*)&game_state);
