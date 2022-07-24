@@ -41,23 +41,30 @@ void event_handler(GameState* game_state)
             break;
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym) {
+            case SDLK_UP:
             case SDLK_w:
-                if (can_go_to(game_state, game_state->piece, 0, 0, 1)) {
-                    game_state->piece.rotation = (game_state->piece.rotation + 1) % 4;
-                }
+                rotate_shape(game_state);
                 break;
+            case SDLK_LEFT:
             case SDLK_a:
                 if (can_go_to(game_state, game_state->piece, -1, 0, 0)) {
                     game_state->piece.x--;
                 }
                 break;
+            case SDLK_RIGHT:
             case SDLK_d:
                 if (can_go_to(game_state, game_state->piece, 1, 0, 0)) {
                     game_state->piece.x++;
                 }
                 break;
+            case SDLK_DOWN:
             case SDLK_s:
                 if (can_go_to(game_state, game_state->piece, 0, 1, 0)) {
+                    game_state->piece.y++;
+                }
+                break;
+            case SDLK_x:
+                while (can_go_to(game_state, game_state->piece, 0, 1, 0)) {
                     game_state->piece.y++;
                 }
                 break;
