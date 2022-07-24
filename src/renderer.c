@@ -78,7 +78,7 @@ void event_handler(GameState* game_state)
     }
 }
 
-void draw_rect(App app, u_int8_t x, u_int8_t y, uint32_t color)
+void draw_rect(App app, u_int8_t x, u_int8_t y, uint32_t color, bool fancy)
 {
     const padding_x = BLOCK_SIZE;
     const padding_y = BLOCK_SIZE;
@@ -116,7 +116,11 @@ void draw_rect(App app, u_int8_t x, u_int8_t y, uint32_t color)
                 ((uint32_t*)(surface->pixels))[i * BLOCK_SIZE + j] = 0x000000;
 
             } else {
-                ((uint32_t*)(surface->pixels))[i * BLOCK_SIZE + j] = color;
+                if (fancy) {
+                    ((uint32_t*)(surface->pixels))[i * BLOCK_SIZE + j] = color * ((abs(BLOCK_SIZE / 2 - i) + abs(BLOCK_SIZE / 2 - j))) * 10 / BLOCK_SIZE;
+                } else {
+                    ((uint32_t*)(surface->pixels))[i * BLOCK_SIZE + j] = color;
+                }
             }
         }
     }

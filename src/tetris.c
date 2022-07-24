@@ -166,9 +166,9 @@ void render_field(GameState* game_state)
     for (uint8_t i = 4; i < 24; i++) {
         for (uint8_t j = 0; j < 10; j++) {
             if (game_state->field[i][j] != 0) {
-                draw_rect(game_state->app, j + field_padding_x, i + field_padding_y - 4, color_hex[game_state->field[i][j] - 1]);
+                draw_rect(game_state->app, j + field_padding_x, i + field_padding_y - 4, color_hex[game_state->field[i][j] - 1], false);
             } else {
-                draw_rect(game_state->app, j + field_padding_x, i + field_padding_y - 4, 0x7f7f7f);
+                draw_rect(game_state->app, j + field_padding_x, i + field_padding_y - 4, 0x000100, true);
             }
         }
     }
@@ -181,17 +181,17 @@ void render_field(GameState* game_state)
                 j * SHAPE_FIELD_SIZE + (SHAPE_FIELD_SIZE - i - 1),
             };
             if (shapes[game_state->piece.color - 1][rotations[game_state->piece.rotation]] != ' ') {
-                draw_rect(game_state->app, game_state->piece.x + j + field_padding_x, game_state->piece.y + i + field_padding_y - 4, color_hex[game_state->piece.color - 1]);
+                draw_rect(game_state->app, game_state->piece.x + j + field_padding_x, game_state->piece.y + i + field_padding_y - 4, color_hex[game_state->piece.color - 1], false);
             }
         }
     }
     for (uint8_t i = 0; i < 20; i++) {
-        draw_rect(game_state->app, field_padding_x - 1, i + field_padding_y, 0x905099);
-        draw_rect(game_state->app, field_padding_x + 10, i + field_padding_y, 0x905099);
+        draw_rect(game_state->app, field_padding_x - 1, i + field_padding_y, 0x001000, true);
+        draw_rect(game_state->app, field_padding_x + 10, i + field_padding_y, 0x001000, true);
     }
     for (uint8_t j = 0; j < 12; j++) {
-        draw_rect(game_state->app, j + field_padding_x - 1, field_padding_y - 1, 0x905099);
-        draw_rect(game_state->app, j + field_padding_x - 1, field_padding_y + 20, 0x905099);
+        draw_rect(game_state->app, j + field_padding_x - 1, field_padding_y - 1, 0x001000, true);
+        draw_rect(game_state->app, j + field_padding_x - 1, field_padding_y + 20, 0x001000, true);
     }
     SDL_RenderPresent(game_state->app.renderer);
 }

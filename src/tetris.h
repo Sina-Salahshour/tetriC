@@ -36,7 +36,7 @@ typedef struct game_state {
     bool is_game_over;
 } GameState;
 App init_handler();
-void draw_rect(App app, u_int8_t x, u_int8_t y, uint32_t color);
+void draw_rect(App app, u_int8_t x, u_int8_t y, uint32_t color, bool fancy);
 void event_handler(GameState* game_state);
 void draw_shape(Piece field[][10], PieceState piece_state);
 void clear_shape(Piece field[][10], PieceState piece_state);
