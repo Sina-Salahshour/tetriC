@@ -10,3 +10,8 @@ to build and run:
 ```shell
 make all run
 ```
+controls:  
+ - (a,d) or (left, right) to move left and right.  
+ - (w) or (up) to rotate
+ - (s) or (down) to fall faster
+ - (x) to fall instantly
