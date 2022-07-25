@@ -484,8 +484,6 @@ void generate_sound(void* user_data, uint8_t* stream, int len)
             counter = 0;
             music_tick++;
         }
-
-        printf(" wave: %d \r", music_tick);
     }
 }
 

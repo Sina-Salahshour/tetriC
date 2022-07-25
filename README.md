@@ -4,7 +4,7 @@
 
 requirements:  
  - sdl2
- - sdl2_mixer (sound not implemented yet)
+ - sdl2_mixer
 
 to build and run:  
 ```shell
