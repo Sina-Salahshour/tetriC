@@ -5,6 +5,7 @@
 requirements:  
  - sdl2
  - sdl2_mixer
+ - sdl2_image
 
 to build and run:  
 ```shell
